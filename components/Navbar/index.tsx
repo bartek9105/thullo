@@ -3,9 +3,9 @@ import Logo from '../Logo'
 
 const Navbar = () => {
 	return (
-		<nav>
+		<div className={styles.navbar}>
 			<Logo />
-		</nav>
+		</div>
 	)
 }
 
