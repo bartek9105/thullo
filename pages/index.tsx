@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import AllBoards from '../components/AllBoards'
 
 const Home: NextPage = () => {
 	return (
@@ -11,7 +12,12 @@ const Home: NextPage = () => {
 					href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap'
 					rel='stylesheet'
 				/>
+				<link
+					href='https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'
+					rel='stylesheet'
+				></link>
 			</Head>
+			<AllBoards />
 		</div>
 	)
 }
