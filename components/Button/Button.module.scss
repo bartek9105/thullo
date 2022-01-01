@@ -1,15 +1,16 @@
-@use 'styles/colors' as *;
-@use 'styles/fonts' as *;
+@use "styles/colors" as *;
+@use "styles/fonts" as *;
 
 .button {
-	background-color: $color-royal-blue;
-	padding: 8px 13px;
-	font-family: $font-poppins;
-	font-size: 10px;
-	line-height: 15px;
-	letter-spacing: -0.035em;
-	color: $color-white;
-	border-radius: 8px;
-	cursor: pointer;
-	border: 0;
+  background-color: $color-royal-blue;
+  padding: 8px 13px;
+  font-family: $font-poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: -0.035em;
+  color: $color-white;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 0;
 }

@@ -1,14 +1,14 @@
-import { PropsWithChildren } from 'react'
-import styles from './Button.module.scss'
+import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import styles from "./Button.module.scss";
 
-type ButtonProps = PropsWithChildren<{}>
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({ children, ...restProps }: ButtonProps) => {
-	return (
-		<button {...restProps} className={styles.button}>
-			{children}
-		</button>
-	)
-}
+  return (
+    <button {...restProps} className={styles.button}>
+      {children}
+    </button>
+  );
+};
 
-export default Button
+export default Button;
