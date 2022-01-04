@@ -1,6 +1,6 @@
 export type Board = {
-	id: number
-	created_at: Date
-	name: string
-	imgUrl: string
-}
+  id: number;
+  created_at: Date;
+  name: string;
+  imgUrl: string | null;
+};

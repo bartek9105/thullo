@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import AllBoards from "../modules/AllBoards";
+import AllBoards from "../modules/AllBoards/containers";
 
 const Home: NextPage = () => {
   return (

@@ -1,0 +1,32 @@
+@use "styles/colors" as *;
+@use "styles/placeholders/button" as *;
+
+.test {
+  @extend %button;
+  background-color: #f2f2f2;
+  color: #828282;
+  &:hover {
+    background-color: #d1d1d1;
+    color: $color-white;
+  }
+}
+
+.fileUpload {
+  background-color: #f2f2f2;
+}
+
+.icon {
+  color: #828282;
+}
+
+.hint {
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.035em;
+  color: #828282;
+}
+
+.button {
+  pointer-events: none;
+}

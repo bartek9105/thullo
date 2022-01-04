@@ -1,16 +1,48 @@
 @use "styles/colors" as *;
 @use "styles/fonts" as *;
 
+@use "styles/placeholders/button" as *;
+
 .button {
-  background-color: $color-royal-blue;
   padding: 8px 13px;
   font-family: $font-poppins;
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
   letter-spacing: -0.035em;
-  color: $color-white;
   border-radius: 8px;
   cursor: pointer;
   border: 0;
+  display: flex;
+  align-items: center;
+  transition: ease-in-out 0.2s;
+}
+
+.blue {
+  background-color: $color-royal-blue;
+  color: $color-white;
+  &:hover {
+    background-color: $color-royal-blue-hover;
+  }
+}
+
+.white {
+  background-color: $color-white;
+  color: #828282;
+  &:hover {
+    color: #a1a1a1;
+  }
+}
+
+.gray {
+  background-color: #f2f2f2;
+  color: #828282;
+  &:hover {
+    background-color: #d1d1d1;
+    color: $color-white;
+  }
+}
+
+.icon {
+  margin-right: 10px;
 }

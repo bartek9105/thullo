@@ -1,0 +1,42 @@
+@use "styles/colors" as *;
+
+.settingsButtonsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.imgPreviewContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.imgPreview {
+  border-radius: 8px;
+}
+
+.closeIcon {
+  cursor: pointer;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: -12px;
+  right: -12px;
+  color: $color-white;
+  background-color: $color-royal-blue;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.input {
+  margin-bottom: 20px;
+}
