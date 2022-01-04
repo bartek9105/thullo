@@ -7,32 +7,41 @@ import FileUploadInput from "../../../components/FileUploadInput";
 import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { motion } from "framer-motion";
+import { imageAnimation } from "../../../animations/image.animation";
+
+export type CreateBoardFormValues = {
+  name: string;
+};
+
+type CreateBoardFormProps = {
+  handleSubmit: (values: CreateBoardFormValues) => void;
+  handleCancel: () => void;
+  imagePreviewUrl: string;
+  setImagePreviewUrl: (url: string) => void;
+  setImageForUpload: (image: File) => void;
+};
 
 const CreateBoardForm = ({
-  onSubmit,
-  onCancel,
-  onImageUpload,
-  imagePreview,
-  setImagePreview,
-  setImage,
-}: any) => {
+  handleSubmit,
+  handleCancel,
+  imagePreviewUrl,
+  setImagePreviewUrl,
+  setImageForUpload,
+}: CreateBoardFormProps) => {
+  const initialValues: CreateBoardFormValues = { name: "" };
+
   return (
     <>
-      {imagePreview && (
-        <motion.div
-          className={styles.imgPreviewContainer}
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.2 }}
-        >
+      {imagePreviewUrl && (
+        <motion.div className={styles.imgPreviewContainer} {...imageAnimation}>
           <FeatherIcon
             icon="x"
             size={14}
             className={styles.closeIcon}
-            onClick={() => setImagePreview(false)}
+            onClick={() => setImagePreviewUrl("")}
           />
           <Image
-            src={imagePreview}
+            src={imagePreviewUrl}
             alt="boardImage"
             layout="fill"
             objectFit="cover"
@@ -42,51 +51,54 @@ const CreateBoardForm = ({
         </motion.div>
       )}
       <Formik
-        initialValues={{ name: "" }}
-        onSubmit={onSubmit}
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
         validationSchema={yup.object({
-          name: yup.string().required("Please enter board"),
+          name: yup.string().required("Please enter board name"),
         })}
       >
-        {(formik) => (
-          <Form>
+        <Form>
+          <Field
+            name="name"
+            type="text"
+            placeholder="Add board title"
+            as={Input}
+            className={styles.input}
+          />
+          <div className={styles.settingsButtonsContainer}>
             <Field
-              name="name"
-              type="text"
-              placeholder="Add board title"
-              as={Input}
-              className={styles.input}
+              name="img_url"
+              onChange={(e: any) => {
+                const image = e.target.files[0];
+                setImageForUpload(image);
+                setImagePreviewUrl(URL.createObjectURL(image));
+              }}
+              id="img_url"
+              as={FileUploadInput}
             />
-            <div className={styles.settingsButtonsContainer}>
-              <Field
-                name="img_url"
-                onChange={(e: any) => {
-                  setImage(e.target.files[0]);
-                  setImagePreview(URL.createObjectURL(e.target.files[0]));
-                }}
-                id="img_url"
-                as={FileUploadInput}
-                imgPreviewUrl={imagePreview}
-                setImagePreview={setImagePreview}
-              />
-              <Button variant="gray" iconName="lock">
-                Private
-              </Button>
-            </div>
-            <div className={styles.actionButtonsContainer}>
-              <Button
-                variant="white"
-                onClick={onCancel}
-                className={styles.button}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" iconName="plus">
-                Create
-              </Button>
-            </div>
-          </Form>
-        )}
+            <Field
+              name="isPrivate"
+              as={Button}
+              variant="gray"
+              iconName="lock"
+              type="button"
+            >
+              Private
+            </Field>
+          </div>
+          <div className={styles.actionButtonsContainer}>
+            <Button
+              variant="white"
+              onClick={handleCancel}
+              className={styles.button}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" iconName="plus">
+              Create
+            </Button>
+          </div>
+        </Form>
       </Formik>
     </>
   );

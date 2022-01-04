@@ -5,37 +5,37 @@ import styles from "./AllBoards.module.scss";
 import { useState } from "react";
 import NewBoardModal from "../components/NewBoardModal";
 import { supabase } from "../../../utils/supabaseClient";
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
+import { CreateBoardFormValues } from "../forms/CreateBoardForm";
+import { v4 as uuid } from "uuid";
 
 const AllBoards = () => {
   const { boards } = useGetBoards();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imagePreview, setImagePreview] = useState<any>(null);
-  const [image, setImage] = useState<any>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  const [imageForUpload, setImageForUpload] = useState<File | null>(null);
 
-  const handleSubmit = async (values: any) => {
-    const publicUrl = await handleImageUpload(image);
+  const handleSubmit = async ({ name }: CreateBoardFormValues) => {
+    let imagePublicUrl = "";
 
-    await supabase
-      .from("boards")
-      .insert([{ name: values.name, img_url: publicUrl }]);
+    if (imageForUpload) {
+      imagePublicUrl = await handleImageUpload(imageForUpload);
+    }
+
+    await supabase.from("boards").insert([{ name, img_url: imagePublicUrl }]);
 
     setIsModalOpen(false);
   };
+  const handleImageUpload = async (image: File) => {
+    const imageName = `${image.name}${uuid()}`;
 
-  const handleImageUpload = async (image: any) => {
-    const { data, error } = await supabase.storage
-      .from("images")
-      .upload(`public/${image.name}`, image, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    await supabase.storage.from("images").upload(`public/${imageName}`, image, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
-    const { publicURL } = await supabase.storage
-      .from("images")
-      .getPublicUrl(`public/${image.name}`);
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${image.name}`;
 
-    return publicURL;
+    return publicUrl;
   };
 
   return (
@@ -59,9 +59,9 @@ const AllBoards = () => {
         handleSubmit={(values) => handleSubmit(values)}
         handleCancel={() => setIsModalOpen(false)}
         handleImageUpload={handleImageUpload}
-        imagePreview={imagePreview}
-        setImagePreview={setImagePreview}
-        setImage={setImage}
+        imagePreviewUrl={imagePreviewUrl}
+        setImagePreviewUrl={setImagePreviewUrl}
+        setImageForUpload={setImageForUpload}
       />
     </>
   );

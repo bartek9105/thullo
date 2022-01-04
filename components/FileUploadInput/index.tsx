@@ -1,19 +1,10 @@
 import { InputHTMLAttributes } from "react";
-import FeatherIcon from "feather-icons-react";
 
 import styles from "./FileUploadInput.module.scss";
-import Image from "next/image";
-import Button from "../Button";
 
-type FileUploadInput = InputHTMLAttributes<HTMLInputElement> & {
-  imgPreviewUrl: string;
-};
+type FileUploadInput = InputHTMLAttributes<HTMLInputElement>;
 
-const FileUploadInput = ({
-  id,
-  imgPreviewUrl,
-  ...restProps
-}: FileUploadInput) => {
+const FileUploadInput = ({ id, ...restProps }: FileUploadInput) => {
   return (
     <>
       <label htmlFor={id} className={styles.test}>

@@ -1,37 +1,38 @@
 import Modal, { ModalProps } from "../../../../components/Modal";
-import CreateBoardForm from "../../forms/CreateBoardForm";
+import CreateBoardForm, {
+  CreateBoardFormValues,
+} from "../../forms/CreateBoardForm";
 import styles from "./NewBoardModal.module.scss";
 
 type NewBoardModalProps = ModalProps & {
-  handleSubmit: (values: any) => void;
+  handleSubmit: (values: CreateBoardFormValues) => void;
   handleCancel: () => void;
-  handleImageUpload: (file: any) => void;
-  imagePreview: any;
-  setImagePreview: (value: boolean) => void;
-  setImage: (image: any) => void;
+  handleImageUpload: (image: File) => void;
+  imagePreviewUrl: string;
+  setImagePreviewUrl: (url: string) => void;
+  setImageForUpload: (image: File) => void;
 };
 
 const NewBoardModal = ({
   handleSubmit,
   handleCancel,
   handleImageUpload,
-  imagePreview,
-  setImagePreview,
-  setImage,
+  imagePreviewUrl,
+  setImagePreviewUrl,
+  setImageForUpload,
   ...restProps
 }: NewBoardModalProps) => {
   return (
     <Modal {...restProps}>
       <div className={styles.container}>
         <CreateBoardForm
-          onSubmit={(values: any) => {
+          handleSubmit={(values: CreateBoardFormValues) => {
             handleSubmit(values);
           }}
-          onCancel={handleCancel}
-          onImageUpload={handleImageUpload}
-          imagePreview={imagePreview}
-          setImagePreview={setImagePreview}
-          setImage={setImage}
+          handleCancel={handleCancel}
+          imagePreviewUrl={imagePreviewUrl}
+          setImagePreviewUrl={setImagePreviewUrl}
+          setImageForUpload={setImageForUpload}
         />
       </div>
     </Modal>
