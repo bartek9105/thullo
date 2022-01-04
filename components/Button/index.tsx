@@ -6,12 +6,14 @@ import cn from "classnames";
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   iconName?: string;
   variant?: "blue" | "white" | "gray";
+  active?: boolean;
 };
 
 const Button = ({
   iconName,
   variant = "blue",
   children,
+  active = false,
   ...restProps
 }: ButtonProps) => {
   return (

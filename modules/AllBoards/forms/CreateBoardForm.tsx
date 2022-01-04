@@ -11,6 +11,7 @@ import { imageAnimation } from "../../../animations/image.animation";
 
 export type CreateBoardFormValues = {
   name: string;
+  isPrivate: boolean;
 };
 
 type CreateBoardFormProps = {
@@ -28,7 +29,7 @@ const CreateBoardForm = ({
   setImagePreviewUrl,
   setImageForUpload,
 }: CreateBoardFormProps) => {
-  const initialValues: CreateBoardFormValues = { name: "" };
+  const initialValues: CreateBoardFormValues = { name: "", isPrivate: false };
 
   return (
     <>
@@ -57,48 +58,52 @@ const CreateBoardForm = ({
           name: yup.string().required("Please enter board name"),
         })}
       >
-        <Form>
-          <Field
-            name="name"
-            type="text"
-            placeholder="Add board title"
-            as={Input}
-            className={styles.input}
-          />
-          <div className={styles.settingsButtonsContainer}>
+        {({ setFieldValue, values: { isPrivate } }) => (
+          <Form>
             <Field
-              name="img_url"
-              onChange={(e: any) => {
-                const image = e.target.files[0];
-                setImageForUpload(image);
-                setImagePreviewUrl(URL.createObjectURL(image));
-              }}
-              id="img_url"
-              as={FileUploadInput}
+              name="name"
+              type="text"
+              placeholder="Add board title"
+              as={Input}
+              className={styles.input}
             />
-            <Field
-              name="isPrivate"
-              as={Button}
-              variant="gray"
-              iconName="lock"
-              type="button"
-            >
-              Private
-            </Field>
-          </div>
-          <div className={styles.actionButtonsContainer}>
-            <Button
-              variant="white"
-              onClick={handleCancel}
-              className={styles.button}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" iconName="plus">
-              Create
-            </Button>
-          </div>
-        </Form>
+            <div className={styles.settingsButtonsContainer}>
+              <Field
+                name="img_url"
+                onChange={(e: any) => {
+                  const image = e.target.files[0];
+                  setImageForUpload(image);
+                  setImagePreviewUrl(URL.createObjectURL(image));
+                }}
+                id="img_url"
+                as={FileUploadInput}
+              />
+              <Field
+                name="isPrivate"
+                as={Button}
+                variant={isPrivate ? "blue" : "gray"}
+                iconName="lock"
+                type="button"
+                active={isPrivate}
+                onClick={() => setFieldValue("isPrivate", !isPrivate)}
+              >
+                Private
+              </Field>
+            </div>
+            <div className={styles.actionButtonsContainer}>
+              <Button
+                variant="white"
+                onClick={handleCancel}
+                className={styles.button}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" iconName="plus">
+                Create
+              </Button>
+            </div>
+          </Form>
+        )}
       </Formik>
     </>
   );

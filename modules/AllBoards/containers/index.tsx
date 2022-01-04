@@ -14,14 +14,16 @@ const AllBoards = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [imageForUpload, setImageForUpload] = useState<File | null>(null);
 
-  const handleSubmit = async ({ name }: CreateBoardFormValues) => {
+  const handleSubmit = async ({ name, isPrivate }: CreateBoardFormValues) => {
     let imagePublicUrl = "";
 
     if (imageForUpload) {
       imagePublicUrl = await handleImageUpload(imageForUpload);
     }
 
-    await supabase.from("boards").insert([{ name, img_url: imagePublicUrl }]);
+    await supabase
+      .from("boards")
+      .insert([{ name, img_url: imagePublicUrl, isPrivate }]);
 
     setIsModalOpen(false);
   };
@@ -32,6 +34,9 @@ const AllBoards = () => {
       cacheControl: "3600",
       upsert: false,
     });
+
+    setImageForUpload(null);
+    setImagePreviewUrl("");
 
     const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${image.name}`;
 
