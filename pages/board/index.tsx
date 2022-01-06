@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import Board from "../../components/Board";
+import { DragDropContext } from "react-beautiful-dnd";
 import BoardLayout from "../../components/Layout/BoardLayout";
+import ColumnDroppable from "../../modules/Board/components/ColumnDroppable";
 import { supabase } from "../../utils/supabaseClient";
 
 const BoardPage = () => {
@@ -39,38 +39,12 @@ const BoardPage = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           <div style={{ display: "flex", gap: 96 }}>
             {cardsByList.map(({ id, listName, cards }: any, index: number) => (
-              <div key={index}>
-                <h1>{listName}</h1>
-                <Droppable droppableId={`${id}`}>
-                  {(provided) => (
-                    <>
-                      <ul {...provided.droppableProps} ref={provided.innerRef}>
-                        {cards.length > 0 &&
-                          cards.map(({ id, title }: any, index: number) => {
-                            return (
-                              <Draggable
-                                key={id}
-                                draggableId={id.toString()}
-                                index={index}
-                              >
-                                {(provided) => (
-                                  <li
-                                    {...provided.dragHandleProps}
-                                    {...provided.draggableProps}
-                                    ref={provided.innerRef}
-                                  >
-                                    <Board name={title} imgUrl={null} />
-                                  </li>
-                                )}
-                              </Draggable>
-                            );
-                          })}
-                      </ul>
-                      {provided.placeholder}
-                    </>
-                  )}
-                </Droppable>
-              </div>
+              <ColumnDroppable
+                key={index}
+                title={listName}
+                cardData={cards}
+                droppableId={`${id}`}
+              />
             ))}
           </div>
         </DragDropContext>
