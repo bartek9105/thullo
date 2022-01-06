@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { ReactElement } from "react";
+import Layout from "../components/Layout";
 import AllBoards from "../modules/AllBoards/containers";
 
 const Home: NextPage = () => {
@@ -21,5 +23,7 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+Home.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
 export default Home;
