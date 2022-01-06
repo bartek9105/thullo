@@ -2,11 +2,13 @@ import styles from "./Board.module.scss";
 import Image from "next/image";
 import { Board } from "../../types/Board";
 
-type BoardProps = Omit<Board, "id" | "created_at">;
+type BoardProps = Omit<Board, "id" | "created_at"> & {
+  innerRef?: any;
+};
 
-const Board = ({ name, imgUrl }: BoardProps) => {
+const Board = ({ name, imgUrl, innerRef, ...restProps }: BoardProps) => {
   return (
-    <article className={styles.container}>
+    <article className={styles.container} ref={innerRef}>
       {imgUrl && (
         <div className={styles.imageContainer}>
           <Image
@@ -16,6 +18,7 @@ const Board = ({ name, imgUrl }: BoardProps) => {
             objectFit="cover"
             objectPosition="50% 20%"
             className={styles.image}
+            {...restProps}
           />
         </div>
       )}
