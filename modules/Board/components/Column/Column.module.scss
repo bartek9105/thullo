@@ -1,0 +1,22 @@
+@use "styles/fonts" as *;
+@use "styles/colors" as *;
+
+.column {
+  min-width: 243px;
+}
+
+.title {
+  font-family: $font-poppins;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+
+  color: $color-black;
+  margin-bottom: 18px;
+}
+
+.cardsList {
+  list-style: none;
+  display: grid;
+  row-gap: 24px;
+}

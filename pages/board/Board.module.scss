@@ -1,0 +1,15 @@
+@use "styles/colors" as *;
+
+.container {
+  padding: 24px 24px 0;
+  height: 100%;
+}
+
+.boardContainer {
+  display: flex;
+  gap: 32px;
+  background-color: $color-white-lilac;
+  height: 100%;
+  border-radius: 8px;
+  padding: 28px 24px;
+}

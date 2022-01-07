@@ -14,7 +14,7 @@ const AllBoards = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [imageForUpload, setImageForUpload] = useState<File | null>(null);
 
-  const handleSubmit = async ({ name, isPrivate }: CreateBoardFormValues) => {
+  const handleSubmit = async ({ title, isPrivate }: CreateBoardFormValues) => {
     let imagePublicUrl = "";
 
     if (imageForUpload) {
@@ -23,7 +23,7 @@ const AllBoards = () => {
 
     await supabase
       .from("boards")
-      .insert([{ name, img_url: imagePublicUrl, isPrivate }]);
+      .insert([{ title, img_url: imagePublicUrl, isPrivate }]);
 
     setIsModalOpen(false);
   };
@@ -38,7 +38,7 @@ const AllBoards = () => {
     setImageForUpload(null);
     setImagePreviewUrl("");
 
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${image.name}`;
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${imageName}`;
 
     return publicUrl;
   };
@@ -54,8 +54,8 @@ const AllBoards = () => {
         </div>
         <div className={styles.boardsContainer}>
           {boards &&
-            boards.map(({ id, name, img_url }) => (
-              <Board key={id} name={name} imgUrl={img_url} />
+            boards.map(({ id, title, img_url }) => (
+              <Board key={id} title={title} imgUrl={img_url} />
             ))}
         </div>
       </div>

@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { imageAnimation } from "../../../animations/image.animation";
 
 export type CreateBoardFormValues = {
-  name: string;
+  title: string;
   isPrivate: boolean;
 };
 
@@ -29,7 +29,7 @@ const CreateBoardForm = ({
   setImagePreviewUrl,
   setImageForUpload,
 }: CreateBoardFormProps) => {
-  const initialValues: CreateBoardFormValues = { name: "", isPrivate: false };
+  const initialValues: CreateBoardFormValues = { title: "", isPrivate: false };
 
   return (
     <>
@@ -55,13 +55,13 @@ const CreateBoardForm = ({
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={yup.object({
-          name: yup.string().required("Please enter board name"),
+          title: yup.string().required("Please enter board title"),
         })}
       >
         {({ setFieldValue, values: { isPrivate } }) => (
           <Form>
             <Field
-              name="name"
+              name="title"
               type="text"
               placeholder="Add board title"
               as={Input}

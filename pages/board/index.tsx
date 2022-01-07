@@ -3,6 +3,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import BoardLayout from "../../components/Layout/BoardLayout";
 import ColumnDroppable from "../../modules/Board/components/ColumnDroppable";
 import { supabase } from "../../utils/supabaseClient";
+import styles from "./Board.module.scss";
 
 const BoardPage = () => {
   const onDragEnd = () => {};
@@ -36,18 +37,22 @@ const BoardPage = () => {
   return (
     <>
       {winReady && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div style={{ display: "flex", gap: 96 }}>
-            {cardsByList.map(({ id, listName, cards }: any, index: number) => (
-              <ColumnDroppable
-                key={index}
-                title={listName}
-                cardData={cards}
-                droppableId={`${id}`}
-              />
-            ))}
-          </div>
-        </DragDropContext>
+        <div className={styles.container}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className={styles.boardContainer}>
+              {cardsByList.map(
+                ({ id, listName, cards }: any, index: number) => (
+                  <ColumnDroppable
+                    key={index}
+                    title={listName}
+                    cardData={cards}
+                    droppableId={`${id}`}
+                  />
+                )
+              )}
+            </div>
+          </DragDropContext>
+        </div>
       )}
     </>
   );
