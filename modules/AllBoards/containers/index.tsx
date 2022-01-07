@@ -11,7 +11,7 @@ import Link from "next/link";
 import { routes } from "../../../config/routes.config";
 
 const AllBoards = () => {
-  const { boards } = useGetBoards();
+  const { boards, fetchBoards } = useGetBoards();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [imageForUpload, setImageForUpload] = useState<File | null>(null);
@@ -28,6 +28,8 @@ const AllBoards = () => {
       .insert([{ title, img_url: imagePublicUrl, isPrivate }]);
 
     setIsModalOpen(false);
+
+    await fetchBoards();
   };
   const handleImageUpload = async (image: File) => {
     const imageName = `${image.name}${uuid()}`;
