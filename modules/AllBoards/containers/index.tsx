@@ -9,6 +9,7 @@ import { CreateBoardFormValues } from "../forms/CreateBoardForm";
 import { v4 as uuid } from "uuid";
 import Link from "next/link";
 import { routes } from "../../../config/routes.config";
+import AddButton from "../../Board/components/AddButton";
 
 const AllBoards = () => {
   const { boards, fetchBoards } = useGetBoards();

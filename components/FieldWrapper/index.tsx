@@ -16,7 +16,7 @@ const FieldWrapper = ({
 }: FieldWrapperProps) => {
   return (
     <div className={cn(className, styles.container)}>
-      <label>{label}</label>
+      {label && <label>{label}</label>}
       {children}
       {error && <div className={styles.error}>{error}</div>}
     </div>

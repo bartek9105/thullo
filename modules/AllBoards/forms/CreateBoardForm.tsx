@@ -31,6 +31,10 @@ const CreateBoardForm = ({
 }: CreateBoardFormProps) => {
   const initialValues: CreateBoardFormValues = { title: "", isPrivate: false };
 
+  const validationSchema = yup.object({
+    title: yup.string().required("Please enter board title"),
+  });
+
   return (
     <>
       {imagePreviewUrl && (
@@ -54,9 +58,7 @@ const CreateBoardForm = ({
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={yup.object({
-          title: yup.string().required("Please enter board title"),
-        })}
+        validationSchema={validationSchema}
       >
         {({ setFieldValue, values: { isPrivate } }) => (
           <Form>

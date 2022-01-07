@@ -6,10 +6,10 @@ import styles from "./Input.module.scss";
 type InputProps = FieldWrapperProps & InputHTMLAttributes<HTMLInputElement>;
 
 const Input = ({ label, error, className, ...restProps }: InputProps) => {
-  const [field, meta] = useField(restProps);
+  // const [field, meta] = useField(restProps);
 
   return (
-    <FieldWrapper label={label} error={meta.error} className={className}>
+    <FieldWrapper label={label} className={className}>
       <input {...restProps} className={styles.input} />
     </FieldWrapper>
   );

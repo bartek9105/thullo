@@ -5,8 +5,11 @@ import ColumnDroppable from "../../../modules/Board/components/ColumnDroppable";
 import { supabase } from "../../../utils/supabaseClient";
 import styles from "./Board.module.scss";
 import { useRouter } from "next/router";
+import AddButton from "../../../modules/Board/components/AddButton";
+import AddBoardListForm from "../../../modules/Board/forms/AddBoardListForm";
 
 const BoardPage = () => {
+  const [showNewListInput, setShowNewListInput] = useState(false);
   const { query } = useRouter();
   const boardId = query.id;
 
@@ -16,6 +19,12 @@ const BoardPage = () => {
 
   const [lists, setLists] = useState<[] | any>([]);
   const [cards, setCards] = useState<[] | any>([]);
+
+  const handleSubmit = async ({ listName }: any) => {
+    const { data, error } = await supabase
+      .from("lists")
+      .insert([{ listName, board_id: boardId }]);
+  };
 
   useEffect(() => {
     setWinReady(true);
@@ -58,6 +67,19 @@ const BoardPage = () => {
                   />
                 )
               )}
+              <div style={{ height: "fit-content", width: 243 }}>
+                {!showNewListInput && (
+                  <AddButton
+                    className={styles.button}
+                    onClick={() => setShowNewListInput(true)}
+                  >
+                    Add new list
+                  </AddButton>
+                )}
+                {showNewListInput && (
+                  <AddBoardListForm handleSubmit={handleSubmit} />
+                )}
+              </div>
             </div>
           </DragDropContext>
         </div>
