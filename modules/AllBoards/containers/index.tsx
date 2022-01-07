@@ -9,13 +9,30 @@ import { CreateBoardFormValues } from "../forms/CreateBoardForm";
 import { v4 as uuid } from "uuid";
 import Link from "next/link";
 import { routes } from "../../../config/routes.config";
-import AddButton from "../../Board/components/AddButton";
+import { useMutation, useQuery } from "react-query";
+import {
+  getBoards,
+  postBoard,
+  PostBoardConfig,
+} from "../../../api/boards/boards.api";
 
 const AllBoards = () => {
-  const { boards, fetchBoards } = useGetBoards();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [imageForUpload, setImageForUpload] = useState<File | null>(null);
+
+  const { data: boards, isLoading: isBoardsLoading } = useQuery(
+    "boards",
+    getBoards
+  );
+
+  const {
+    mutateAsync: postNewBoard,
+    isLoading,
+    data,
+  } = useMutation((data: PostBoardConfig) => postBoard(data), {
+    onSuccess: () => {},
+  });
 
   const handleSubmit = async ({ title, isPrivate }: CreateBoardFormValues) => {
     let imagePublicUrl = "";
@@ -24,13 +41,9 @@ const AllBoards = () => {
       imagePublicUrl = await handleImageUpload(imageForUpload);
     }
 
-    await supabase
-      .from("boards")
-      .insert([{ title, img_url: imagePublicUrl, isPrivate }]);
-
     setIsModalOpen(false);
 
-    await fetchBoards();
+    await postNewBoard({ title, img_url: imagePublicUrl, isPrivate });
   };
   const handleImageUpload = async (image: File) => {
     const imageName = `${image.name}${uuid()}`;
@@ -58,6 +71,7 @@ const AllBoards = () => {
           </Button>
         </div>
         <div className={styles.boardsContainer}>
+          {isBoardsLoading && <h1>Loading...</h1>}
           {boards &&
             boards.map(({ id, title, img_url }) => (
               <Link href={routes.board.details(id)} key={id}>
