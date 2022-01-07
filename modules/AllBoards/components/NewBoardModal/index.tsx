@@ -23,7 +23,7 @@ const NewBoardModal = ({
   ...restProps
 }: NewBoardModalProps) => {
   return (
-    <Modal {...restProps}>
+    <Modal {...restProps} onClose={handleCancel}>
       <div className={styles.container}>
         <CreateBoardForm
           handleSubmit={(values: CreateBoardFormValues) => {
