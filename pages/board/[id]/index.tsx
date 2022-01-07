@@ -1,11 +1,15 @@
 import { ReactElement, useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import BoardLayout from "../../components/Layout/BoardLayout";
-import ColumnDroppable from "../../modules/Board/components/ColumnDroppable";
-import { supabase } from "../../utils/supabaseClient";
+import BoardLayout from "../../../components/Layout/BoardLayout";
+import ColumnDroppable from "../../../modules/Board/components/ColumnDroppable";
+import { supabase } from "../../../utils/supabaseClient";
 import styles from "./Board.module.scss";
+import { useRouter } from "next/router";
 
 const BoardPage = () => {
+  const { query } = useRouter();
+  const boardId = query.id;
+
   const onDragEnd = () => {};
 
   const [winReady, setWinReady] = useState(false);
@@ -20,7 +24,11 @@ const BoardPage = () => {
   }, []);
 
   const getLists = async () => {
-    let { data: lists, error } = await supabase.from("lists").select("*");
+    let { data: lists, error } = await supabase
+      .from("lists")
+      .select("*")
+      .eq("board_id", boardId);
+
     setLists(lists);
   };
 
@@ -29,8 +37,8 @@ const BoardPage = () => {
     setCards(cards);
   };
 
-  const cardsByList = lists.map((list: any) => {
-    const cardsByList = cards.filter((card: any) => card.list_id === list.id);
+  const cardsByList = lists?.map((list: any) => {
+    const cardsByList = cards?.filter((card: any) => card.list_id === list.id);
     return { ...list, cards: cardsByList };
   });
 
@@ -40,7 +48,7 @@ const BoardPage = () => {
         <div className={styles.container}>
           <DragDropContext onDragEnd={onDragEnd}>
             <div className={styles.boardContainer}>
-              {cardsByList.map(
+              {cardsByList?.map(
                 ({ id, listName, cards }: any, index: number) => (
                   <ColumnDroppable
                     key={index}

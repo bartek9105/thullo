@@ -7,6 +7,8 @@ import NewBoardModal from "../components/NewBoardModal";
 import { supabase } from "../../../utils/supabaseClient";
 import { CreateBoardFormValues } from "../forms/CreateBoardForm";
 import { v4 as uuid } from "uuid";
+import Link from "next/link";
+import { routes } from "../../../config/routes.config";
 
 const AllBoards = () => {
   const { boards } = useGetBoards();
@@ -55,7 +57,11 @@ const AllBoards = () => {
         <div className={styles.boardsContainer}>
           {boards &&
             boards.map(({ id, title, img_url }) => (
-              <Board key={id} title={title} imgUrl={img_url} />
+              <Link href={routes.board.details(id)} key={id}>
+                <a>
+                  <Board key={id} title={title} imgUrl={img_url} />
+                </a>
+              </Link>
             ))}
         </div>
       </div>
