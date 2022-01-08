@@ -9,7 +9,7 @@ const ClientOnly = ({ children }: ClientOnlyProps) => {
     setWindowReady(true);
   }, []);
 
-  return <>{windowReady && { children }}</>;
+  return <>{windowReady && children}</>;
 };
 
 export default ClientOnly;

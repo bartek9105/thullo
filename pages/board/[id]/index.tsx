@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import BoardLayout from "../../../components/Layout/BoardLayout";
 import ColumnDroppable from "../../../modules/Board/components/ColumnDroppable";
@@ -8,43 +8,33 @@ import { useRouter } from "next/router";
 import AddButton from "../../../modules/Board/components/AddButton";
 import AddBoardListForm from "../../../modules/Board/forms/AddBoardListForm";
 import ClientOnly from "../../../components/ClientOnly";
+import { getBoardLists, postBoardList } from "../../../api/lists";
+import { useMutation, useQuery } from "react-query";
+import { getCards } from "../../../api/cards/cards.api";
 
 const BoardPage = () => {
   const [showNewListInput, setShowNewListInput] = useState(false);
+
   const { query } = useRouter();
-  const boardId = query.id;
+  const boardId = Number(query.id);
 
   const onDragEnd = () => {};
 
-  const [lists, setLists] = useState<[] | any>([]);
-  const [cards, setCards] = useState<[] | any>([]);
-
   const handleSubmit = async ({ listName }: any) => {
-    const { data, error } = await supabase
-      .from("lists")
-      .insert([{ listName, board_id: boardId }]);
+    await postNewList(listName);
   };
 
-  useEffect(() => {
-    getLists();
-    getCards();
-  }, []);
+  const { mutateAsync: postNewList } = useMutation((data: any) =>
+    postBoardList(data, boardId)
+  );
 
-  const getLists = async () => {
-    let { data: lists, error } = await supabase
-      .from("lists")
-      .select("*")
-      .eq("board_id", boardId);
+  const { data: boardLists } = useQuery(["boards", boardId], () =>
+    getBoardLists(boardId)
+  );
 
-    setLists(lists);
-  };
+  const { data: cards } = useQuery("cards", getCards);
 
-  const getCards = async () => {
-    let { data: cards, error } = await supabase.from("cards").select("*");
-    setCards(cards);
-  };
-
-  const cardsByList = lists?.map((list: any) => {
+  const cardsByList = boardLists?.map((list: any) => {
     const cardsByList = cards?.filter((card: any) => card.list_id === list.id);
     return { ...list, cards: cardsByList };
   });
