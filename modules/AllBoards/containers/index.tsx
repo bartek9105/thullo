@@ -1,12 +1,9 @@
-import { useGetBoards } from "../../../hooks/useGetBoards";
 import Board from "../../../components/Board";
 import Button from "../../../components/Button";
 import styles from "./AllBoards.module.scss";
 import { useState } from "react";
 import NewBoardModal from "../components/NewBoardModal";
-import { supabase } from "../../../utils/supabaseClient";
 import { CreateBoardFormValues } from "../forms/CreateBoardForm";
-import { v4 as uuid } from "uuid";
 import Link from "next/link";
 import { routes } from "../../../config/routes.config";
 import { useMutation, useQuery } from "react-query";
@@ -16,6 +13,7 @@ import {
   PostBoardConfig,
 } from "../../../api/boards/boards.api";
 import Loader from "../../../components/Loader";
+import { uploadFile } from "../../../api/storage/storage.api";
 
 const AllBoards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,17 +42,10 @@ const AllBoards = () => {
   };
 
   const handleImageUpload = async (image: File) => {
-    const imageName = `${image.name}${uuid()}`;
-
-    await supabase.storage.from("images").upload(`public/${imageName}`, image, {
-      cacheControl: "3600",
-      upsert: false,
-    });
+    const publicUrl = await uploadFile("images", image);
 
     setImageForUpload(null);
     setImagePreviewUrl("");
-
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${imageName}`;
 
     return publicUrl;
   };
@@ -62,15 +53,15 @@ const AllBoards = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <header className={styles.header}>
           <h1 className={styles.title}>All Boards</h1>
           <Button onClick={() => setIsModalOpen(true)} iconName="plus">
             Add
           </Button>
-        </div>
+        </header>
         {isBoardsLoading && <Loader />}
         {boards && (
-          <div className={styles.boardsContainer}>
+          <section className={styles.boardsContainer}>
             {boards.map(({ id, title, img_url }) => (
               <Link href={routes.board.details(id)} key={id}>
                 <a>
@@ -78,7 +69,7 @@ const AllBoards = () => {
                 </a>
               </Link>
             ))}
-          </div>
+          </section>
         )}
       </div>
       <NewBoardModal

@@ -4,7 +4,7 @@ import { Board } from "../../types/Board";
 
 export type BoardProps = Omit<Board, "id" | "created_at">;
 
-const Board = ({ title, imgUrl, ...restProps }: BoardProps) => {
+const Board = ({ title, imgUrl }: BoardProps) => {
   return (
     <article className={styles.container}>
       {imgUrl && (
@@ -16,7 +16,6 @@ const Board = ({ title, imgUrl, ...restProps }: BoardProps) => {
             objectFit="cover"
             objectPosition="50% 20%"
             className={styles.image}
-            {...restProps}
           />
         </div>
       )}

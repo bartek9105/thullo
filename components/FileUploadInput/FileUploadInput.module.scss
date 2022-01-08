@@ -1,32 +1,17 @@
 @use "styles/colors" as *;
 @use "styles/placeholders/button" as *;
+@use "styles/fonts" as *;
 
-.test {
+.label {
   @extend %button;
-  background-color: #f2f2f2;
-  color: #828282;
+  background-color: $color-concrete;
+  color: $color-gray;
   &:hover {
-    background-color: #d1d1d1;
+    background-color: $color-alto;
     color: $color-white;
   }
 }
 
-.fileUpload {
-  background-color: #f2f2f2;
-}
-
-.icon {
-  color: #828282;
-}
-
-.hint {
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 18px;
-  letter-spacing: -0.035em;
-  color: #828282;
-}
-
-.button {
-  pointer-events: none;
+.fileInput {
+  display: none;
 }
