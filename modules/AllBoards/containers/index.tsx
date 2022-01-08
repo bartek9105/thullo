@@ -15,6 +15,7 @@ import {
   postBoard,
   PostBoardConfig,
 } from "../../../api/boards/boards.api";
+import Loader from "../../../components/Loader";
 
 const AllBoards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,13 +27,9 @@ const AllBoards = () => {
     getBoards
   );
 
-  const {
-    mutateAsync: postNewBoard,
-    isLoading,
-    data,
-  } = useMutation((data: PostBoardConfig) => postBoard(data), {
-    onSuccess: () => {},
-  });
+  const { mutateAsync: postNewBoard } = useMutation((data: PostBoardConfig) =>
+    postBoard(data)
+  );
 
   const handleSubmit = async ({ title, isPrivate }: CreateBoardFormValues) => {
     let imagePublicUrl = "";
@@ -45,6 +42,7 @@ const AllBoards = () => {
 
     await postNewBoard({ title, img_url: imagePublicUrl, isPrivate });
   };
+
   const handleImageUpload = async (image: File) => {
     const imageName = `${image.name}${uuid()}`;
 
@@ -70,17 +68,18 @@ const AllBoards = () => {
             Add
           </Button>
         </div>
-        <div className={styles.boardsContainer}>
-          {isBoardsLoading && <h1>Loading...</h1>}
-          {boards &&
-            boards.map(({ id, title, img_url }) => (
+        {isBoardsLoading && <Loader />}
+        {boards && (
+          <div className={styles.boardsContainer}>
+            {boards.map(({ id, title, img_url }) => (
               <Link href={routes.board.details(id)} key={id}>
                 <a>
                   <Board key={id} title={title} imgUrl={img_url} />
                 </a>
               </Link>
             ))}
-        </div>
+          </div>
+        )}
       </div>
       <NewBoardModal
         isOpen={isModalOpen}
