@@ -7,6 +7,7 @@ import styles from "./Board.module.scss";
 import { useRouter } from "next/router";
 import AddButton from "../../../modules/Board/components/AddButton";
 import AddBoardListForm from "../../../modules/Board/forms/AddBoardListForm";
+import ClientOnly from "../../../components/ClientOnly";
 
 const BoardPage = () => {
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -14,8 +15,6 @@ const BoardPage = () => {
   const boardId = query.id;
 
   const onDragEnd = () => {};
-
-  const [winReady, setWinReady] = useState(false);
 
   const [lists, setLists] = useState<[] | any>([]);
   const [cards, setCards] = useState<[] | any>([]);
@@ -27,7 +26,6 @@ const BoardPage = () => {
   };
 
   useEffect(() => {
-    setWinReady(true);
     getLists();
     getCards();
   }, []);
@@ -52,39 +50,35 @@ const BoardPage = () => {
   });
 
   return (
-    <>
-      {winReady && (
-        <div className={styles.container}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <div className={styles.boardContainer}>
-              {cardsByList?.map(
-                ({ id, listName, cards }: any, index: number) => (
-                  <ColumnDroppable
-                    key={index}
-                    title={listName}
-                    cardData={cards}
-                    droppableId={`${id}`}
-                  />
-                )
+    <ClientOnly>
+      <div className={styles.container}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className={styles.boardContainer}>
+            {cardsByList?.map(({ id, listName, cards }: any, index: number) => (
+              <ColumnDroppable
+                key={index}
+                title={listName}
+                cardData={cards}
+                droppableId={`${id}`}
+              />
+            ))}
+            <div style={{ height: "fit-content", width: 243 }}>
+              {!showNewListInput && (
+                <AddButton
+                  className={styles.button}
+                  onClick={() => setShowNewListInput(true)}
+                >
+                  Add new list
+                </AddButton>
               )}
-              <div style={{ height: "fit-content", width: 243 }}>
-                {!showNewListInput && (
-                  <AddButton
-                    className={styles.button}
-                    onClick={() => setShowNewListInput(true)}
-                  >
-                    Add new list
-                  </AddButton>
-                )}
-                {showNewListInput && (
-                  <AddBoardListForm handleSubmit={handleSubmit} />
-                )}
-              </div>
+              {showNewListInput && (
+                <AddBoardListForm handleSubmit={handleSubmit} />
+              )}
             </div>
-          </DragDropContext>
-        </div>
-      )}
-    </>
+          </div>
+        </DragDropContext>
+      </div>
+    </ClientOnly>
   );
 };
 
