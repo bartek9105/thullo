@@ -1,17 +1,28 @@
 import { supabase } from "../../utils/supabaseClient";
 
+type Card = {
+  id: number;
+  title: string;
+};
+
+type List = {
+  id: number;
+  cards: Card[];
+  listName: string;
+};
+
 type BoardList = {
   id: number;
-  created_at: any;
-  board_id: number;
-  listName: string;
+  img_url: string | null;
+  lists: List[];
+  title: string;
 };
 
 export const getBoardLists = async (boardId: number) => {
   const { data } = await supabase
-    .from<BoardList>("lists")
-    .select("*")
-    .eq("board_id", boardId);
+    .from<BoardList>("boards")
+    .select("id, title, img_url, lists ( id, listName, cards (id, title) )")
+    .eq("id", boardId);
 
   return data;
 };

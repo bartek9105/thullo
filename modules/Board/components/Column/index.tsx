@@ -1,3 +1,4 @@
+import AddButton from "../AddButton";
 import styles from "./Column.module.scss";
 
 export type ColumnProps<T> = {
@@ -15,12 +16,13 @@ const Column = <T extends {}>({
     <div className={styles.column}>
       <h3 className={styles.title}>{title}</h3>
       <ul className={styles.cardsList}>
-        {cardData.map((card: T, index) => (
+        {cardData?.map((card: T, index) => (
           <li key={index} className={styles.card}>
             {renderCard(card)}
           </li>
         ))}
       </ul>
+      <AddButton>Add new card</AddButton>
     </div>
   );
 };
