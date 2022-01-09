@@ -22,7 +22,6 @@ const Column = <T extends {}>({
           </li>
         ))}
       </ul>
-      <AddButton>Add new card</AddButton>
     </div>
   );
 };

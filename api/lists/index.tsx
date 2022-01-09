@@ -30,3 +30,9 @@ export const getBoardLists = async (boardId: number) => {
 export const postBoardList = async (listName: string, boardId: number) => {
   return await supabase.from("lists").insert([{ listName, board_id: boardId }]);
 };
+
+export const postListCard = async (cardData: any, listId: number) => {
+  return await supabase
+    .from("cards")
+    .insert([{ ...cardData, list_id: listId }]);
+};

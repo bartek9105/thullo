@@ -6,10 +6,16 @@
 }
 
 .boardContainer {
+  overflow-x: scroll;
   display: flex;
   gap: 32px;
   background-color: $color-white-lilac;
   border-radius: 24px;
   padding: 28px 24px;
   height: 100%;
+}
+
+.columnContainer {
+  display: flex;
+  flex-direction: column;
 }

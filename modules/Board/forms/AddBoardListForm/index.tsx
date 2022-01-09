@@ -10,9 +10,13 @@ type AddBoardListFormValues = {
 
 type AddBoardListFormProps = {
   handleSubmit: (values: any) => void;
+  handleCancel: () => void;
 };
 
-const AddBoardListForm = ({ handleSubmit }: AddBoardListFormProps) => {
+const AddBoardListForm = ({
+  handleSubmit,
+  handleCancel,
+}: AddBoardListFormProps) => {
   const initialValues: AddBoardListFormValues = { listName: "" };
 
   const validationSchema = yup.object({
@@ -34,7 +38,7 @@ const AddBoardListForm = ({ handleSubmit }: AddBoardListFormProps) => {
             as={Input}
           />
           <div className={styles.buttonContainer}>
-            <Button variant="gray" type="button">
+            <Button variant="gray" type="button" onClick={handleCancel}>
               Cancel
             </Button>
             <Button type="submit" iconName="plus">
