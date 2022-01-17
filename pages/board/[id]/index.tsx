@@ -69,7 +69,7 @@ const BoardPage = () => {
                 </AddButton>
               </div>
             ))}
-            <div style={{ height: "fit-content", width: 243 }}>
+            <div className={styles.columnContainer}>
               {showNewListInput ? (
                 <AddBoardListForm
                   handleSubmit={handleSubmit}

@@ -1,4 +1,3 @@
-import AddButton from "../AddButton";
 import styles from "./Column.module.scss";
 
 export type ColumnProps<T> = {

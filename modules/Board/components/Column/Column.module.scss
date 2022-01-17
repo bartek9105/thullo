@@ -20,3 +20,9 @@
   display: grid;
   row-gap: 24px;
 }
+
+.card {
+  &:last-of-type {
+    margin-bottom: 16px;
+  }
+}
