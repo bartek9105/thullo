@@ -5,6 +5,13 @@
   min-width: 243px;
 }
 
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
 .title {
   font-family: $font-poppins;
   font-weight: 500;
@@ -12,7 +19,6 @@
   line-height: 21px;
 
   color: $color-black;
-  margin-bottom: 18px;
 }
 
 .cardsList {
@@ -25,4 +31,18 @@
   &:last-of-type {
     margin-bottom: 16px;
   }
+}
+
+.iconContainer {
+  position: relative;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 24px;
+  left: 0;
 }

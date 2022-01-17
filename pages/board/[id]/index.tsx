@@ -15,6 +15,7 @@ const BoardPage = () => {
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [activeList, setActiveList] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showColumnDropdown, setShowColumnDropdown] = useState(false);
 
   const { query } = useRouter();
   const boardId = Number(query.id);
@@ -57,6 +58,11 @@ const BoardPage = () => {
                   cardData={cards}
                   droppableId={`${id}`}
                   className={styles.column}
+                  setShowColumnDropdown={(value: boolean) => {
+                    setActiveList(id);
+                    setShowColumnDropdown(value);
+                  }}
+                  showColumnDropdown={showColumnDropdown && activeList === id}
                 />
                 <AddButton
                   className={styles.button}
