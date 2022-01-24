@@ -8,10 +8,12 @@ import AddButton from "../../../modules/Board/components/AddButton";
 import AddBoardListForm from "../../../modules/Board/forms/AddBoardListForm";
 import ClientOnly from "../../../components/ClientOnly";
 import { getBoardLists, postBoardList, postListCard } from "../../../api/lists";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import NewCardModal from "../../../modules/Board/components/NewCardModal";
 
 const BoardPage = () => {
+  const queryClient = useQueryClient();
+
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [activeList, setActiveList] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,22 +26,25 @@ const BoardPage = () => {
 
   const handleSubmit = async ({ listName }: any) => {
     await postNewList(listName);
+    refetchBoardLists();
   };
 
-  const { mutateAsync: postNewList } = useMutation((data: any) =>
-    postBoardList(data, boardId)
-  );
+  const { mutateAsync: postNewList } = useMutation((data: any) => {
+    return postBoardList(data, boardId);
+  });
 
-  const { mutateAsync: postNewCard } = useMutation((data: any) =>
-    postListCard(data, activeList)
-  );
+  const { mutateAsync: postNewCard } = useMutation((data: any) => {
+    return postListCard(data, activeList);
+  });
 
-  const { data: boardLists } = useQuery(["boards", boardId], () =>
-    getBoardLists(boardId)
+  const { data: boardLists, refetch: refetchBoardLists } = useQuery(
+    ["boards", boardId],
+    () => getBoardLists(boardId)
   );
 
   const handleCardSubmit = async (cardData: any) => {
     await postNewCard(cardData);
+    refetchBoardLists();
     setIsModalOpen(false);
   };
 

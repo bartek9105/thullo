@@ -20,10 +20,11 @@ const AllBoards = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [imageForUpload, setImageForUpload] = useState<File | null>(null);
 
-  const { data: boards, isLoading: isBoardsLoading } = useQuery(
-    "boards",
-    getBoards
-  );
+  const {
+    data: boards,
+    isLoading: isBoardsLoading,
+    refetch: refetchBoards,
+  } = useQuery("boards", getBoards);
 
   const { mutateAsync: postNewBoard } = useMutation((data: PostBoardConfig) =>
     postBoard(data)
@@ -39,6 +40,7 @@ const AllBoards = () => {
     setIsModalOpen(false);
 
     await postNewBoard({ title, img_url: imagePublicUrl, isPrivate });
+    refetchBoards();
   };
 
   const handleImageUpload = async (image: File) => {
