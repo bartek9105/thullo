@@ -11,6 +11,7 @@ type ColumnDroppableProps<T> = {
   cardData: T[];
   showColumnDropdown: boolean;
   setShowColumnDropdown: (value: boolean) => void;
+  onListDelete: () => void;
 };
 
 const renderCard = (card: any) => {
@@ -24,6 +25,7 @@ const ColumnDroppable = <T extends {}>({
   className,
   showColumnDropdown,
   setShowColumnDropdown,
+  onListDelete,
 }: ColumnDroppableProps<T>) => {
   return (
     <Droppable droppableId={droppableId}>
@@ -41,7 +43,10 @@ const ColumnDroppable = <T extends {}>({
                     onClick={() => setShowColumnDropdown(!showColumnDropdown)}
                   />
                   {showColumnDropdown && (
-                    <ListDropdown className={styles.dropdown} />
+                    <ListDropdown
+                      className={styles.dropdown}
+                      onDelete={onListDelete}
+                    />
                   )}
                 </div>
               </div>

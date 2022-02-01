@@ -3,13 +3,19 @@ import cn from "classnames";
 
 type ListDropdownProps = {
   className?: string;
+  onRename?: () => void;
+  onDelete: () => void;
 };
 
-const ListDropdown = ({ className }: ListDropdownProps) => {
+const ListDropdown = ({ className, onRename, onDelete }: ListDropdownProps) => {
   return (
     <ul className={cn(styles.listContainer, className)}>
-      <li className={styles.listItem}>Rename</li>
-      <li className={styles.listItem}>Delete this list</li>
+      <li className={styles.listItem} onClick={onRename}>
+        Rename
+      </li>
+      <li className={styles.listItem} onClick={onDelete}>
+        Delete this list
+      </li>
     </ul>
   );
 };

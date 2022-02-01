@@ -36,3 +36,7 @@ export const postListCard = async (cardData: any, listId: number) => {
     .from("cards")
     .insert([{ ...cardData, list_id: listId }]);
 };
+
+export const removeBoardList = async (listId: number) => {
+  return await supabase.from("lists").delete().eq("id", listId);
+};

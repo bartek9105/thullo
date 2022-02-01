@@ -7,7 +7,12 @@ import { useRouter } from "next/router";
 import AddButton from "../../../modules/Board/components/AddButton";
 import AddBoardListForm from "../../../modules/Board/forms/AddBoardListForm";
 import ClientOnly from "../../../components/ClientOnly";
-import { getBoardLists, postBoardList, postListCard } from "../../../api/lists";
+import {
+  getBoardLists,
+  postBoardList,
+  postListCard,
+  removeBoardList,
+} from "../../../api/lists";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import NewCardModal from "../../../modules/Board/components/NewCardModal";
 
@@ -26,8 +31,18 @@ const BoardPage = () => {
 
   const handleSubmit = async ({ listName }: any) => {
     await postNewList(listName);
+    setShowNewListInput(false);
     refetchBoardLists();
   };
+
+  const onListDelete = async () => {
+    await removeList(activeList);
+    refetchBoardLists();
+  };
+
+  const { mutateAsync: removeList } = useMutation((listId: number) => {
+    return removeBoardList(listId);
+  });
 
   const { mutateAsync: postNewList } = useMutation((data: any) => {
     return postBoardList(data, boardId);
@@ -68,6 +83,7 @@ const BoardPage = () => {
                     setShowColumnDropdown(value);
                   }}
                   showColumnDropdown={showColumnDropdown && activeList === id}
+                  onListDelete={onListDelete}
                 />
                 <AddButton
                   className={styles.button}
